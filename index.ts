@@ -25,13 +25,15 @@ const port = process.env.PORT || 3000;
 // };
 // createProjectAssignments();
 
-db.User.findAll({
-  include: {
-    model: db.Project,
-  },
-})
-  .then((result: object) => console.log(JSON.stringify(result)))
-  .catch((err: object) => console.error(err));
+app.get("/", (req, res) => {
+  db.User.findAll({
+    include: {
+      model: db.Project,
+    },
+  })
+    .then((result: object) => res.json(result))
+    .catch((err: object) => console.error(err));
+});
 
 db.sequelize.sync().then(() => {
   app.listen(port, () => {
