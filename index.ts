@@ -1,6 +1,5 @@
 import express from "express";
 import db from "./src/main/db/models";
-import { projectassignments } from "./src/main/db/seeders/projectassignments";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,12 +18,20 @@ const port = process.env.PORT || 3000;
 // };
 // createProjects();
 
-const createProjectAssignments = () => {
-  projectassignments.map((projectassignment) => {
-    db.ProjectAssignment.create(projectassignment);
-  });
-};
-createProjectAssignments();
+// const createProjectAssignments = () => {
+//   projectassignments.map((projectassignment) => {
+//     db.ProjectAssignment.create(projectassignment);
+//   });
+// };
+// createProjectAssignments();
+
+db.User.findAll({
+  include: {
+    model: db.Project,
+  },
+})
+  .then((result: object) => console.log(JSON.stringify(result)))
+  .catch((err: object) => console.error(err));
 
 db.sequelize.sync().then(() => {
   app.listen(port, () => {
